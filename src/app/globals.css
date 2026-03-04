@@ -3,21 +3,20 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --primary: #6B21A8;
+  --primary-hover: #581C87;
+  --background: #F9FAFB;
+  --foreground: #111827;
+  --font-sans: var(--font-geist-sans), system-ui, Arial, sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 @layer utilities {
