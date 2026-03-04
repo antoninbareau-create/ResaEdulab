@@ -294,17 +294,6 @@ export default function NewEquipmentPage() {
                 />
               </div>
 
-              <div className="sm:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">URL de l&apos;image</label>
-                <input
-                  name="image_url"
-                  value={form.image_url ?? ''}
-                  onChange={handleFormChange}
-                  placeholder="https://..."
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary"
-                />
-              </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Statut</label>
                 <select
