@@ -15,9 +15,8 @@ export async function GET(request: Request) {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   )
 
-  const tomorrow = new Date()
-  tomorrow.setDate(tomorrow.getDate() + 1)
-  const tomorrowStr = tomorrow.toISOString().split('T')[0]
+  const today = new Date()
+  const todayStr = today.toISOString().split('T')[0]
 
   const { data: reservations, error } = await supabase
     .from('reservations')
@@ -27,8 +26,8 @@ export async function GET(request: Request) {
       reservation_items (equipment (nom, equipement))
     `)
     .eq('status', 'active')
-    .gte('end_date', `${tomorrowStr}T00:00:00`)
-    .lte('end_date', `${tomorrowStr}T23:59:59`)
+    .gte('end_date', `${todayStr}T00:00:00`)
+    .lte('end_date', `${todayStr}T23:59:59`)
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })

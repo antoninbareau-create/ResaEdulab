@@ -46,11 +46,11 @@ export async function sendReminderEmail(data: ReservationEmailData) {
   return resend.emails.send({
     from: 'Edulab Réservations <noreply@edulab.fr>',
     to: data.to,
-    subject: `Rappel : retour d'équipement demain`,
+    subject: `Rappel : retour d'équipement aujourd'hui`,
     text: `
 Bonjour ${data.userName},
 
-Rappel : vous devez retourner les équipements suivants demain (${data.endDate}) :
+Votre emprunt prend fin aujourd'hui (${data.endDate}). Merci de retourner les équipements suivants :
 
 ${itemsList}
 
