@@ -23,8 +23,8 @@
   /* Legacy */
   --background: #F5F7FA;
   --foreground: #1C1C2E;
-  --font-sans: var(--font-geist-sans), system-ui, Arial, sans-serif;
-  --font-mono: var(--font-geist-mono), monospace;
+  --font-sans: Arial, Helvetica, system-ui, sans-serif;
+  --font-mono: 'Courier New', monospace;
 }
 
 body {
