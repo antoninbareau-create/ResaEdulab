@@ -8,9 +8,9 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantStyles = {
-  primary: 'bg-purple-800 text-white hover:bg-purple-900 disabled:opacity-50',
-  secondary: 'bg-white text-purple-800 border border-purple-800 hover:bg-purple-50 disabled:opacity-50',
-  danger: 'bg-red-600 text-white hover:bg-red-700 disabled:opacity-50',
+  primary: 'bg-brand-primary text-white hover:bg-brand-dark disabled:opacity-50',
+  secondary: 'bg-white text-brand-primary border border-brand-primary hover:bg-brand-light disabled:opacity-50',
+  danger: 'bg-brand-error text-white hover:bg-red-700 disabled:opacity-50',
   ghost: 'text-gray-600 hover:bg-gray-100 disabled:opacity-50',
 }
 
@@ -27,7 +27,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled || loading}
         className={cn(
-          'inline-flex items-center justify-center font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2',
+          'inline-flex items-center justify-center font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2',
           variantStyles[variant],
           sizeStyles[size],
           className

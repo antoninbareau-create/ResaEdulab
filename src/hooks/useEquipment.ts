@@ -18,9 +18,11 @@ export function useEquipment({ search = '', status = 'all' }: UseEquipmentOption
   useEffect(() => {
     async function fetchEquipment() {
       setLoading(true)
+      const today = new Date().toISOString()
+
       let query = supabase.from('equipment').select('*').order('nom')
 
-      if (status !== 'all') {
+      if (status !== 'all' && status !== 'on_loan') {
         query = query.eq('status', status)
       }
 
@@ -30,12 +32,31 @@ export function useEquipment({ search = '', status = 'all' }: UseEquipmentOption
         )
       }
 
-      const { data, error } = await query
+      const [{ data, error }, { data: onLoanRows }] = await Promise.all([
+        query,
+        supabase
+          .from('reservation_items')
+          .select('equipment_id, reservations!inner(status, start_date, end_date)')
+          .is('returned_at', null)
+          .eq('reservations.status', 'active')
+          .lte('reservations.start_date', today)
+          .gte('reservations.end_date', today),
+      ])
 
       if (error) {
         setError(error.message)
       } else {
-        setEquipment(data || [])
+        const onLoanIds = new Set((onLoanRows ?? []).map((r: { equipment_id: string }) => r.equipment_id))
+        let result = (data || []).map((item) => ({
+          ...item,
+          status: onLoanIds.has(item.id) ? 'on_loan' : item.status,
+        })) as Equipment[]
+
+        if (status === 'on_loan') {
+          result = result.filter((item) => item.status === 'on_loan')
+        }
+
+        setEquipment(result)
       }
       setLoading(false)
     }

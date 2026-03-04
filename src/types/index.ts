@@ -1,4 +1,4 @@
-export type EquipmentStatus = 'available' | 'unavailable' | 'maintenance'
+export type EquipmentStatus = 'available' | 'unavailable' | 'maintenance' | 'on_loan'
 export type ReservationStatus = 'active' | 'returned' | 'cancelled'
 export type UserRole = 'user' | 'admin'
 

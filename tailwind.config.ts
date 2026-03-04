@@ -11,10 +11,18 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-        primary: {
-          DEFAULT: "#6B21A8",
-          hover: "#581C87",
-          light: "#F3E8FF",
+        brand: {
+          primary: "#00B4C8",
+          dark: "#1A2E4A",
+          accent: "#FF6B35",
+          surface: "#F5F7FA",
+          border: "#E0E6ED",
+          text: "#1C1C2E",
+          muted: "#6B7A8D",
+          success: "#00C896",
+          warning: "#FFAA00",
+          error: "#E84040",
+          light: "#E0F9FC",
         },
       },
       fontFamily: {

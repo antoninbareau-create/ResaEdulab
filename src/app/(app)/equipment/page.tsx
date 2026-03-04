@@ -34,15 +34,16 @@ export default function EquipmentPage() {
           placeholder="Rechercher un équipement..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+          className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary"
         />
         <select
           value={status}
           onChange={(e) => setStatus(e.target.value as EquipmentStatus | 'all')}
-          className="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white"
+          className="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary bg-white"
         >
           <option value="all">Tous les statuts</option>
           <option value="available">Disponibles</option>
+          <option value="on_loan">En prêt</option>
           <option value="unavailable">Indisponibles</option>
           <option value="maintenance">Maintenance</option>
         </select>

@@ -45,7 +45,7 @@ export default async function ReservationsPage() {
           <CardContent className="text-center py-12 text-gray-400">
             <p className="mb-4">Aucune réservation</p>
             <Link href="/equipment">
-              <span className="text-purple-800 font-medium hover:underline">Parcourir les équipements →</span>
+              <span className="text-brand-primary font-medium hover:underline">Parcourir les équipements →</span>
             </Link>
           </CardContent>
         </Card>

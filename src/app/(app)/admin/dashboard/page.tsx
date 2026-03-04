@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { Card, CardContent } from '@/components/ui/Card'
 
 export default async function AdminDashboardPage() {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
 
   const [
     { count: totalEquipment },
@@ -18,7 +18,7 @@ export default async function AdminDashboardPage() {
   const onLoan = (totalEquipment || 0) - (availableEquipment || 0)
 
   const stats = [
-    { label: 'Total équipements', value: totalEquipment || 0, color: 'bg-purple-50 text-purple-700' },
+    { label: 'Total équipements', value: totalEquipment || 0, color: 'bg-brand-light text-brand-primary' },
     { label: 'Disponibles', value: availableEquipment || 0, color: 'bg-green-50 text-green-700' },
     { label: 'En prêt', value: onLoan, color: 'bg-orange-50 text-orange-700' },
     { label: 'Réservations actives', value: activeReservations || 0, color: 'bg-blue-50 text-blue-700' },

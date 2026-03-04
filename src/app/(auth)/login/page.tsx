@@ -32,13 +32,14 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 w-full max-w-md p-8">
+    <div className="min-h-screen bg-brand-surface flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl shadow-sm border border-brand-border w-full max-w-md p-8">
         <div className="text-center mb-8">
-          <div className="w-12 h-12 bg-purple-800 rounded-xl flex items-center justify-center mx-auto mb-4">
-            <span className="text-white text-xl font-bold">E</span>
+          <div className="mb-4 flex justify-center">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo-edulab.png" alt="EduLAB" width="194" height="86" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">Edulab Réservations</h1>
+          <h1 className="text-2xl font-bold text-brand-dark">Réservations</h1>
           <p className="text-gray-500 mt-1 text-sm">Connectez-vous à votre compte</p>
         </div>
 
@@ -50,7 +51,7 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary text-sm"
               placeholder="vous@exemple.fr"
             />
           </div>
@@ -62,7 +63,7 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary text-sm"
               placeholder="••••••••"
             />
           </div>
@@ -78,7 +79,7 @@ export default function LoginPage() {
 
         <p className="text-center text-sm text-gray-500 mt-6">
           Pas encore de compte ?{' '}
-          <Link href="/register" className="text-purple-800 font-medium hover:underline">
+          <Link href="/register" className="text-brand-primary font-medium hover:underline">
             S&apos;inscrire
           </Link>
         </p>

@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createClient } from '@/lib/supabase/server'
+export const dynamic = 'force-dynamic'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { formatDateRange } from '@/lib/utils'
 import { ReservationStatus } from '@/types'
 
 export default async function AdminReservationsPage() {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
 
   const { data: reservations } = await supabase
     .from('reservations')

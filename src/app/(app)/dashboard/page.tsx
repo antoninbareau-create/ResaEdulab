@@ -32,7 +32,7 @@ export default async function DashboardPage() {
         <Link href="/equipment">
           <Card className="hover:shadow-md transition-shadow cursor-pointer">
             <CardContent className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+              <div className="w-12 h-12 bg-brand-light rounded-xl flex items-center justify-center">
                 <span className="text-2xl">📦</span>
               </div>
               <div>

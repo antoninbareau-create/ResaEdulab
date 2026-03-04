@@ -3,20 +3,42 @@
 @tailwind utilities;
 
 :root {
-  --primary: #6B21A8;
-  --primary-hover: #581C87;
-  --background: #F9FAFB;
-  --foreground: #111827;
+  /* --- Couleurs principales EduLAB --- */
+  --color-primary:    #00B4C8;
+  --color-dark:       #1A2E4A;
+  --color-accent:     #FF6B35;
+
+  /* --- Neutres --- */
+  --color-bg:         #FFFFFF;
+  --color-surface:    #F5F7FA;
+  --color-border:     #E0E6ED;
+  --color-text:       #1C1C2E;
+  --color-muted:      #6B7A8D;
+
+  /* --- États sémantiques --- */
+  --color-success:    #00C896;
+  --color-warning:    #FFAA00;
+  --color-error:      #E84040;
+
+  /* Legacy */
+  --background: #F5F7FA;
+  --foreground: #1C1C2E;
   --font-sans: var(--font-geist-sans), system-ui, Arial, sans-serif;
   --font-mono: var(--font-geist-mono), monospace;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
+  color: var(--color-text);
+  background: var(--color-surface);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 @layer utilities {

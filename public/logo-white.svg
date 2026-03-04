@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 195 125" width="195" height="125">
+  <!-- edu — vertical, rotated 90° on the left -->
+  <text
+    transform="translate(22, 100) rotate(-90)"
+    font-family="'Arial', Helvetica, sans-serif"
+    font-size="24"
+    font-weight="700"
+    fill="#ffffff"
+    letter-spacing="1"
+  >edu</text>
+
+  <!-- LAB — large, steel blue -->
+  <text
+    x="38"
+    y="102"
+    font-family="'Arial Black', 'Arial Bold', Arial, sans-serif"
+    font-size="78"
+    font-weight="900"
+    fill="#7EB8C4"
+    letter-spacing="2"
+  >LAB</text>
+
+  <!-- Three amber dots above the letters -->
+  <circle cx="92"  cy="24" r="7" fill="#E8A030"/>
+  <circle cx="113" cy="15" r="7" fill="#E8A030"/>
+  <circle cx="134" cy="24" r="7" fill="#E8A030"/>
+
+  <!-- By Technofutur TIC -->
+  <text
+    x="108"
+    y="118"
+    font-family="'Arial', Helvetica, sans-serif"
+    font-size="10.5"
+    fill="rgba(255,255,255,0.6)"
+    letter-spacing="0.4"
+    text-anchor="middle"
+  >By Technofutur TIC</text>
+</svg>

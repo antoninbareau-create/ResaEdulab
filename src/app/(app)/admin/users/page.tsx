@@ -1,10 +1,11 @@
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { UserRole } from '@/types'
+import { CreateUserForm } from '@/components/admin/CreateUserForm'
 
 export default async function AdminUsersPage() {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
   const { data: users } = await supabase
     .from('profiles')
     .select('*')
@@ -12,7 +13,10 @@ export default async function AdminUsersPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Utilisateurs</h1>
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold text-gray-900">Utilisateurs</h1>
+        <CreateUserForm />
+      </div>
 
       <Card>
         <div className="overflow-x-auto">
@@ -38,6 +42,13 @@ export default async function AdminUsersPage() {
                   </td>
                 </tr>
               ))}
+              {!users?.length && (
+                <tr>
+                  <td colSpan={4} className="px-4 py-6 text-center text-gray-400">
+                    Aucun utilisateur
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
