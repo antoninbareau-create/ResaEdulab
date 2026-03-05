@@ -26,8 +26,8 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ["var(--font-geist-sans)", "system-ui", "Arial", "sans-serif"],
-        mono: ["var(--font-geist-mono)", "monospace"],
+        sans: ["Arial", "Helvetica", "system-ui", "sans-serif"],
+        mono: ["'Courier New'", "monospace"],
       },
     },
   },
