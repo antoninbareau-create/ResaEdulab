@@ -241,22 +241,22 @@ npx ts-node scripts/import-equipment.ts   # one-time data import
 ```css
 :root {
   /* --- Couleurs principales --- */
-  --color-primary:    #00B4C8;   /* Teal cyan — identifiant fort, liens, titres, CTA */
-  --color-dark:       #1A2E4A;   /* Bleu nuit — fonds sombres, textes sur clair */
-  --color-accent:     #FF6B35;   /* Orange — CTA secondaires, badges, alertes */
+  --color-primary:    #48E0A0;   /* Vert menthe — identifiant fort, liens, titres, CTA */
+  --color-dark:       #405058;   /* Gris anthracite — fonds sombres, textes sur clair */
+  --color-accent:     #F8A820;   /* Orange doré — CTA secondaires, badges, alertes */
 
   /* --- Neutres --- */
   --color-bg:         #FFFFFF;   /* Fond principal */
   --color-surface:    #F5F7FA;   /* Fond de carte / section légèrement tonée */
   --color-border:     #E0E6ED;   /* Bordures, séparateurs */
-  --color-text:       #1C1C2E;   /* Corps de texte principal */
-  --color-muted:      #6B7A8D;   /* Texte secondaire, légendes, métadonnées */
+  --color-text:       #3A4850;   /* Corps de texte principal */
+  --color-muted:      #6B7880;   /* Texte secondaire, légendes, métadonnées */
 
   /* --- États sémantiques --- */
-  --color-success:    #00C896;   /* Validation, confirmation */
-  --color-warning:    #FFAA00;   /* Attention, en attente */
+  --color-success:    #38D890;   /* Validation, confirmation */
+  --color-warning:    #F8A820;   /* Attention, en attente */
   --color-error:      #E84040;   /* Erreur, critique */
-  --color-info:       #00B4C8;   /* Information contextuelle (= primary) */
+  --color-info:       #48E0A0;   /* Information contextuelle (= primary) */
 }
 ```
 
@@ -264,23 +264,23 @@ npx ts-node scripts/import-equipment.ts   # one-time data import
 
 | Token | Hex | Usage principal | Ne pas utiliser pour |
 |---|---|---|---|
-| `--color-primary` | `#00B4C8` | Titres, liens, barres nav, icônes actifs | Corps de texte courant |
-| `--color-dark` | `#1A2E4A` | Fonds sombres (hero, footer), titres forts | Petits textes sur fond clair |
-| `--color-accent` | `#FF6B35` | CTA alternatifs, badges, numéros, pastilles | Succès, validation |
+| `--color-primary` | `#48E0A0` | Titres, liens, barres nav, icônes actifs | Corps de texte courant |
+| `--color-dark` | `#405058` | Fonds sombres (hero, footer), titres forts | Petits textes sur fond clair |
+| `--color-accent` | `#F8A820` | CTA alternatifs, badges, numéros, pastilles | Succès, validation |
 | `--color-bg` | `#FFFFFF` | Fond de page et de carte | — |
 | `--color-surface` | `#F5F7FA` | Sections alternées, fonds de formulaires | Contenu principal (trop terne) |
-| `--color-text` | `#1C1C2E` | Tout texte courant | Fonds colorés directs |
-| `--color-muted` | `#6B7A8D` | Légendes, dates, auteurs | Titres, CTA |
-| `--color-success` | `#00C896` | Feedback positif | Danger, avertissement |
-| `--color-warning` | `#FFAA00` | Attention requise | Erreur critique |
+| `--color-text` | `#3A4850` | Tout texte courant | Fonds colorés directs |
+| `--color-muted` | `#6B7880` | Légendes, dates, auteurs | Titres, CTA |
+| `--color-success` | `#38D890` | Feedback positif | Danger, avertissement |
+| `--color-warning` | `#F8A820` | Attention requise | Erreur critique |
 | `--color-error` | `#E84040` | Erreur, blocage | Information neutre |
 
 #### Règle de distribution (60-30-10)
 
 ```
 60% → Neutres (#FFFFFF, #F5F7FA) — fond et zones de lecture
-30% → Primary (#00B4C8) + Dark (#1A2E4A) — structure, titres, nav
-10% → Accent (#FF6B35) + couleurs sémantiques — focus, CTA, badges
+30% → Primary (#48E0A0) + Dark (#405058) — structure, titres, nav
+10% → Accent (#F8A820) + couleurs sémantiques — focus, CTA, badges
 ```
 
 ---
