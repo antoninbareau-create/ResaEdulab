@@ -107,7 +107,7 @@ export default async function EquipmentDetailPage({ params }: { params: { id: st
         <FutureReservations reservations={futureReservations} />
 
         {/* Action */}
-        {effectiveStatus === 'available' && (
+        {(effectiveStatus === 'available' || effectiveStatus === 'on_loan') && (
           <div className="pt-4 border-t border-gray-100">
             <AddToCartButton equipment={item as Equipment} />
           </div>

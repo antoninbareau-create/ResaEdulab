@@ -103,7 +103,7 @@ export default function EquipmentPage() {
             <tbody className="divide-y divide-gray-50">
               {filtered.map((item) => {
                 const inCart = isInCart(item.id)
-                const available = item.status === 'available'
+                const bookable = item.status === 'available' || item.status === 'on_loan'
                 return (
                   <tr key={item.id} className="hover:bg-gray-50">
                     <td className="px-4 py-3 font-mono text-gray-700 text-xs">{item.nom}</td>
@@ -122,7 +122,7 @@ export default function EquipmentPage() {
                         >
                           Fiche
                         </Link>
-                        {available && (
+                        {bookable && (
                           <button
                             onClick={() => inCart ? removeItem(item.id) : addItem(item)}
                             className={`text-xs font-medium px-2.5 py-1 rounded-lg transition-colors ${
