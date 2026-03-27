@@ -1,6 +1,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { Badge } from '@/components/ui/Badge'
 import { AddToCartButton } from '@/components/equipment/AddToCartButton'
+import { FutureReservations } from '@/components/equipment/FutureReservations'
 import { EquipmentStatus, Equipment } from '@/types'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
@@ -11,7 +12,7 @@ export default async function EquipmentDetailPage({ params }: { params: { id: st
   const supabase = createAdminClient()
   const today = new Date().toISOString()
 
-  const [{ data: item }, { data: loanRows }] = await Promise.all([
+  const [{ data: item }, { data: loanRows }, { data: futureRows }] = await Promise.all([
     supabase.from('equipment').select('*').eq('id', params.id).single(),
     supabase
       .from('reservation_items')
@@ -20,8 +21,14 @@ export default async function EquipmentDetailPage({ params }: { params: { id: st
       .is('returned_at', null)
       .eq('reservations.status', 'active')
       .lte('reservations.start_date', today)
-      .gte('reservations.end_date', today)
       .limit(1),
+    supabase
+      .from('reservation_items')
+      .select('reservations!inner(status, start_date, end_date, profiles(full_name, email))')
+      .eq('equipment_id', params.id)
+      .eq('reservations.status', 'active')
+      .gt('reservations.start_date', today)
+      .order('start_date', { referencedTable: 'reservations', ascending: true }),
   ])
 
   if (!item) notFound()
@@ -30,6 +37,14 @@ export default async function EquipmentDetailPage({ params }: { params: { id: st
   const loan = loanRows?.[0] ? (loanRows[0].reservations as any) : null
   const borrower = loan?.profiles ?? null
   const effectiveStatus: EquipmentStatus = loan ? 'on_loan' : item.status
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const futureReservations = (futureRows ?? []).map((r: any) => ({
+    startDate: new Date(r.reservations.start_date).toLocaleDateString('fr-FR'),
+    endDate: new Date(r.reservations.end_date).toLocaleDateString('fr-FR'),
+    borrowerName: r.reservations.profiles?.full_name || '—',
+    borrowerEmail: r.reservations.profiles?.email || '—',
+  }))
 
   const fields = [
     { label: 'Identifiant', value: item.nom },
@@ -68,12 +83,28 @@ export default async function EquipmentDetailPage({ params }: { params: { id: st
         {loan && borrower && (
           <div className="mt-2 pt-4 border-t border-gray-100">
             <p className="text-sm font-medium text-gray-600 mb-2">Actuellement emprunté par</p>
-            <div className="bg-amber-50 border border-amber-100 rounded-lg px-4 py-3">
+            <div className="bg-amber-50 border border-amber-100 rounded-lg px-4 py-3 space-y-1">
               <p className="text-sm font-semibold text-amber-900">{borrower.full_name || '—'}</p>
               <p className="text-xs text-amber-700">{borrower.email}</p>
+              <div className="flex gap-4 mt-2 pt-2 border-t border-amber-200">
+                <div>
+                  <p className="text-xs text-amber-600">Début</p>
+                  <p className="text-xs font-medium text-amber-900">{new Date(loan.start_date).toLocaleDateString('fr-FR')}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-amber-600">Fin prévue</p>
+                  <p className={`text-xs font-medium ${new Date(loan.end_date) < new Date() ? 'text-red-600' : 'text-amber-900'}`}>
+                    {new Date(loan.end_date).toLocaleDateString('fr-FR')}
+                    {new Date(loan.end_date) < new Date() && ' (en retard)'}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         )}
+
+        {/* Planning des réservations futures */}
+        <FutureReservations reservations={futureReservations} />
 
         {/* Action */}
         {effectiveStatus === 'available' && (

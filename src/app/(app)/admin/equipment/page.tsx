@@ -15,8 +15,7 @@ export default async function AdminEquipmentPage() {
       .select('equipment_id, reservations!inner(status, start_date, end_date)')
       .is('returned_at', null)
       .eq('reservations.status', 'active')
-      .lte('reservations.start_date', today)
-      .gte('reservations.end_date', today),
+      .lte('reservations.start_date', today),
   ])
 
   const onLoanIds = (onLoanRows ?? []).map((r: { equipment_id: string }) => r.equipment_id)
