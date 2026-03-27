@@ -24,7 +24,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="min-h-screen bg-brand-surface">
-      <nav className="bg-brand-dark text-white shadow-md sticky top-0 z-10">
+      <nav className="bg-white border-b border-brand-border shadow-sm sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo + liens */}
@@ -37,20 +37,20 @@ export default async function AppLayout({ children }: { children: React.ReactNod
               <div className="hidden sm:flex items-center gap-1">
                 <Link
                   href="/equipment"
-                  className="px-3 py-1.5 text-sm text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+                  className="px-3 py-1.5 text-sm text-brand-muted hover:text-brand-dark hover:bg-brand-surface rounded-lg transition-colors"
                 >
                   Équipements
                 </Link>
                 <Link
                   href="/reservations"
-                  className="px-3 py-1.5 text-sm text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+                  className="px-3 py-1.5 text-sm text-brand-muted hover:text-brand-dark hover:bg-brand-surface rounded-lg transition-colors"
                 >
                   Mes réservations
                 </Link>
                 {isAdmin && (
                   <Link
                     href="/admin/dashboard"
-                    className="px-3 py-1.5 text-sm text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+                    className="px-3 py-1.5 text-sm text-brand-muted hover:text-brand-dark hover:bg-brand-surface rounded-lg transition-colors"
                   >
                     Admin
                   </Link>
@@ -61,17 +61,17 @@ export default async function AppLayout({ children }: { children: React.ReactNod
             {/* Profil + déconnexion */}
             <div className="flex items-center gap-3">
               <Link href="/profile" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                <div className="w-8 h-8 bg-brand-primary/30 rounded-full flex items-center justify-center text-xs font-semibold">
+                <div className="w-8 h-8 bg-brand-primary/20 text-brand-dark rounded-full flex items-center justify-center text-xs font-semibold">
                   {initials}
                 </div>
-                <span className="hidden sm:block text-white/70 text-sm">
+                <span className="hidden sm:block text-brand-muted text-sm">
                   {profile?.full_name || user.email}
                 </span>
               </Link>
               <form action="/api/auth/signout" method="POST">
                 <button
                   type="submit"
-                  className="text-white/50 hover:text-white text-sm transition-colors"
+                  className="text-brand-muted/50 hover:text-brand-dark text-sm transition-colors"
                   title="Se déconnecter"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
