@@ -4,7 +4,7 @@
 
 :root {
   /* --- Couleurs principales EduLAB --- */
-  --color-primary:    #4CE5A5;
+  --color-primary:    #3cadad;
   --color-dark:       #445358;
   --color-accent:     #FFAF24;
 
@@ -16,7 +16,7 @@
   --color-muted:      #6B7880;
 
   /* --- États sémantiques --- */
-  --color-success:    #4CE5A5;
+  --color-success:    #3cadad;
   --color-warning:    #FFAF24;
   --color-error:      #E84040;
 

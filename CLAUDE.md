@@ -241,7 +241,7 @@ npx ts-node scripts/import-equipment.ts   # one-time data import
 ```css
 :root {
   /* --- Couleurs principales --- */
-  --color-primary:    #4CE5A5;   /* Vert menthe — identifiant fort, liens, titres, CTA */
+  --color-primary:    #3cadad;   /* Vert menthe — identifiant fort, liens, titres, CTA */
   --color-dark:       #445358;   /* Gris anthracite — fonds sombres, textes sur clair */
   --color-accent:     #FFAF24;   /* Orange doré — CTA secondaires, badges, alertes */
 
@@ -253,10 +253,10 @@ npx ts-node scripts/import-equipment.ts   # one-time data import
   --color-muted:      #6B7880;   /* Texte secondaire, légendes, métadonnées */
 
   /* --- États sémantiques --- */
-  --color-success:    #4CE5A5;   /* Validation, confirmation */
+  --color-success:    #3cadad;   /* Validation, confirmation */
   --color-warning:    #FFAF24;   /* Attention, en attente */
   --color-error:      #E84040;   /* Erreur, critique */
-  --color-info:       #4CE5A5;   /* Information contextuelle (= primary) */
+  --color-info:       #3cadad;   /* Information contextuelle (= primary) */
 }
 ```
 
@@ -264,14 +264,14 @@ npx ts-node scripts/import-equipment.ts   # one-time data import
 
 | Token | Hex | Usage principal | Ne pas utiliser pour |
 |---|---|---|---|
-| `--color-primary` | `#4CE5A5` | Titres, liens, barres nav, icônes actifs | Corps de texte courant |
+| `--color-primary` | `#3cadad` | Titres, liens, barres nav, icônes actifs | Corps de texte courant |
 | `--color-dark` | `#445358` | Fonds sombres (hero, footer), titres forts | Petits textes sur fond clair |
 | `--color-accent` | `#FFAF24` | CTA alternatifs, badges, numéros, pastilles | Succès, validation |
 | `--color-bg` | `#FFFFFF` | Fond de page et de carte | — |
 | `--color-surface` | `#F5F7FA` | Sections alternées, fonds de formulaires | Contenu principal (trop terne) |
 | `--color-text` | `#445358` | Tout texte courant | Fonds colorés directs |
 | `--color-muted` | `#6B7880` | Légendes, dates, auteurs | Titres, CTA |
-| `--color-success` | `#4CE5A5` | Feedback positif | Danger, avertissement |
+| `--color-success` | `#3cadad` | Feedback positif | Danger, avertissement |
 | `--color-warning` | `#FFAF24` | Attention requise | Erreur critique |
 | `--color-error` | `#E84040` | Erreur, blocage | Information neutre |
 
@@ -279,7 +279,7 @@ npx ts-node scripts/import-equipment.ts   # one-time data import
 
 ```
 60% → Neutres (#FFFFFF, #F5F7FA) — fond et zones de lecture
-30% → Primary (#4CE5A5) + Dark (#445358) — structure, titres, nav
+30% → Primary (#3cadad) + Dark (#445358) — structure, titres, nav
 10% → Accent (#FFAF24) + couleurs sémantiques — focus, CTA, badges
 ```
 
