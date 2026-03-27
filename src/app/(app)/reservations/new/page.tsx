@@ -60,10 +60,9 @@ export default function NewReservationPage() {
       const resEnd = new Date(c.reservations.end_date)
       const reqStart = new Date(startDate)
       const reqEnd = new Date(endDate)
-      // Conflict if: date ranges overlap OR item is overdue (end_date passed but not returned)
-      const datesOverlap = reqStart <= resEnd && reqEnd >= resStart
-      const isOverdue = resEnd < new Date()
-      return datesOverlap || isOverdue
+      // Conflict only if date ranges actually overlap
+      // Overdue items are allowed — the user was already warned at add-to-cart time
+      return reqStart <= resEnd && reqEnd >= resStart
     })
 
     if (conflicting && conflicting.length > 0) {
