@@ -109,7 +109,18 @@ export default async function EquipmentDetailPage({ params }: { params: { id: st
         {/* Action */}
         {(effectiveStatus === 'available' || effectiveStatus === 'on_loan') && (
           <div className="pt-4 border-t border-gray-100">
-            <AddToCartButton equipment={item as Equipment} />
+            <AddToCartButton
+              equipment={item as Equipment}
+              overdueInfo={
+                loan && new Date(loan.end_date) < new Date()
+                  ? {
+                      borrowerName: borrower?.full_name || '—',
+                      borrowerEmail: borrower?.email || '—',
+                      endDate: new Date(loan.end_date).toLocaleDateString('fr-FR'),
+                    }
+                  : undefined
+              }
+            />
           </div>
         )}
       </div>

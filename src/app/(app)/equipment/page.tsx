@@ -1,14 +1,15 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { useEquipment } from '@/hooks/useEquipment'
+import { useEquipment, OverdueInfo } from '@/hooks/useEquipment'
 import { useCart } from '@/hooks/useCart'
 import { Badge } from '@/components/ui/Badge'
-import { EquipmentStatus } from '@/types'
+import { Button } from '@/components/ui/Button'
+import { EquipmentStatus, Equipment } from '@/types'
 import Link from 'next/link'
 
 export default function EquipmentPage() {
-  const { equipment, loading } = useEquipment()
+  const { equipment, overdueMap, loading } = useEquipment()
   const { addItem, removeItem, isInCart, items } = useCart()
 
   const types = useMemo(
@@ -23,6 +24,23 @@ export default function EquipmentPage() {
   const [filterType, setFilterType] = useState('')
   const [filterMarque, setFilterMarque] = useState('')
   const [filterStatut, setFilterStatut] = useState('')
+  const [overdueModal, setOverdueModal] = useState<{ item: Equipment; info: OverdueInfo } | null>(null)
+
+  function handleAddToCart(item: Equipment) {
+    const overdue = overdueMap[item.id]
+    if (overdue) {
+      setOverdueModal({ item, info: overdue })
+    } else {
+      addItem(item)
+    }
+  }
+
+  function confirmOverdueAdd() {
+    if (overdueModal) {
+      addItem(overdueModal.item)
+      setOverdueModal(null)
+    }
+  }
 
   const filtered = useMemo(() => {
     return equipment.filter((item) => {
@@ -124,7 +142,7 @@ export default function EquipmentPage() {
                         </Link>
                         {bookable && (
                           <button
-                            onClick={() => inCart ? removeItem(item.id) : addItem(item)}
+                            onClick={() => inCart ? removeItem(item.id) : handleAddToCart(item)}
                             className={`text-xs font-medium px-2.5 py-1 rounded-lg transition-colors ${
                               inCart
                                 ? 'bg-brand-primary text-white'
@@ -148,6 +166,49 @@ export default function EquipmentPage() {
               )}
             </tbody>
           </table>
+        </div>
+      )}
+
+      {/* Modale avertissement retard */}
+      {overdueModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={() => setOverdueModal(null)}>
+          <div className="bg-white rounded-xl shadow-xl max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
+            <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+              <h2 className="text-lg font-bold text-amber-600">Attention — retour en retard</h2>
+              <button onClick={() => setOverdueModal(null)} className="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
+            </div>
+            <div className="px-6 py-4 space-y-3">
+              <p className="text-sm text-gray-700">
+                L&apos;équipement <span className="font-semibold">{overdueModal.item.equipement}</span>{' '}
+                <span className="font-mono text-xs text-gray-500">({overdueModal.item.nom})</span>{' '}
+                n&apos;a pas encore été rendu. Le retour était prévu le{' '}
+                <span className="font-semibold text-red-600">{overdueModal.info.endDate}</span>.
+              </p>
+              <p className="text-sm text-gray-700">
+                Nous vous conseillons de contacter l&apos;emprunteur actuel :
+              </p>
+              <div className="bg-amber-50 border border-amber-100 rounded-lg px-4 py-3 space-y-1">
+                <p className="text-sm font-semibold text-amber-900">{overdueModal.info.borrowerName}</p>
+                <a
+                  href={`mailto:${overdueModal.info.borrowerEmail}`}
+                  className="text-sm text-brand-primary hover:underline"
+                >
+                  {overdueModal.info.borrowerEmail}
+                </a>
+              </div>
+              <p className="text-xs text-gray-500">
+                Vous pouvez tout de même réserver cet équipement pour des dates futures.
+              </p>
+            </div>
+            <div className="px-6 py-4 border-t border-gray-100 flex gap-3">
+              <Button variant="secondary" className="flex-1" onClick={() => setOverdueModal(null)}>
+                Annuler
+              </Button>
+              <Button className="flex-1" onClick={confirmOverdueAdd}>
+                Réserver quand même
+              </Button>
+            </div>
+          </div>
         </div>
       )}
     </div>
