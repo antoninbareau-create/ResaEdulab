@@ -4,25 +4,25 @@
 
 :root {
   /* --- Couleurs principales EduLAB --- */
-  --color-primary:    #48E0A0;
-  --color-dark:       #405058;
-  --color-accent:     #F8A820;
+  --color-primary:    #4CE5A5;
+  --color-dark:       #445358;
+  --color-accent:     #FFAF24;
 
   /* --- Neutres --- */
   --color-bg:         #FFFFFF;
   --color-surface:    #F5F7FA;
   --color-border:     #E0E6ED;
-  --color-text:       #3A4850;
+  --color-text:       #445358;
   --color-muted:      #6B7880;
 
   /* --- États sémantiques --- */
-  --color-success:    #38D890;
-  --color-warning:    #F8A820;
+  --color-success:    #4CE5A5;
+  --color-warning:    #FFAF24;
   --color-error:      #E84040;
 
   /* Legacy */
   --background: #F5F7FA;
-  --foreground: #3A4850;
+  --foreground: #445358;
   --font-sans: Arial, Helvetica, system-ui, sans-serif;
   --font-mono: 'Courier New', monospace;
 }
