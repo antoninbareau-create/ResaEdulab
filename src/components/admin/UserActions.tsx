@@ -80,7 +80,7 @@ export function UserActions({ user }: { user: Profile }) {
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
             <div className="flex items-center justify-between mb-5">
-              <h2 className="text-lg font-semibold text-gray-900">Modifier l'utilisateur</h2>
+              <h2 className="text-lg font-semibold text-gray-900">Modifier l&apos;utilisateur</h2>
               <button onClick={() => setEditOpen(false)} className="text-gray-400 hover:text-gray-600 text-xl leading-none">×</button>
             </div>
 
@@ -139,9 +139,9 @@ export function UserActions({ user }: { user: Profile }) {
       {deleteOpen && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-2">Supprimer l'utilisateur</h2>
+            <h2 className="text-lg font-semibold text-gray-900 mb-2">Supprimer l&apos;utilisateur</h2>
             <p className="text-sm text-gray-600 mb-5">
-              Confirmer la suppression de <span className="font-medium">{user.full_name || user.email}</span> ?
+              Confirmer la suppression de <span className="font-medium">{user.full_name || user.email}</span> ?{' '}
               Cette action est irréversible.
             </p>
 
