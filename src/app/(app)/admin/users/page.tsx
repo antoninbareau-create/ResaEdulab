@@ -3,6 +3,7 @@ import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { UserRole } from '@/types'
 import { CreateUserForm } from '@/components/admin/CreateUserForm'
+import { UserActions } from '@/components/admin/UserActions'
 
 export default async function AdminUsersPage() {
   const supabase = createAdminClient()
@@ -27,6 +28,7 @@ export default async function AdminUsersPage() {
                 <th className="text-left px-4 py-3 font-medium text-gray-600">Email</th>
                 <th className="text-left px-4 py-3 font-medium text-gray-600">Rôle</th>
                 <th className="text-left px-4 py-3 font-medium text-gray-600">Inscrit le</th>
+                <th className="px-4 py-3"></th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
@@ -39,6 +41,9 @@ export default async function AdminUsersPage() {
                   </td>
                   <td className="px-4 py-3 text-gray-400 text-xs">
                     {new Date(u.created_at).toLocaleDateString('fr-FR')}
+                  </td>
+                  <td className="px-4 py-3">
+                    <UserActions user={u} />
                   </td>
                 </tr>
               ))}
