@@ -16,6 +16,7 @@ export function UserActions({ user }: { user: Profile }) {
     fullName: user.full_name || '',
     email: user.email,
     role: user.role,
+    newPassword: '',
   })
 
   async function handleEdit(e: React.FormEvent) {
@@ -26,7 +27,12 @@ export function UserActions({ user }: { user: Profile }) {
     const res = await fetch(`/api/admin/users/${user.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ fullName: form.fullName, email: form.email, role: form.role }),
+      body: JSON.stringify({
+        fullName: form.fullName,
+        email: form.email,
+        role: form.role,
+        newPassword: form.newPassword || undefined,
+      }),
     })
 
     const data = await res.json()
@@ -103,6 +109,20 @@ export function UserActions({ user }: { user: Profile }) {
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Nouveau mot de passe <span className="text-gray-400 font-normal">(laisser vide pour ne pas changer)</span>
+                </label>
+                <input
+                  type="password"
+                  minLength={6}
+                  value={form.newPassword}
+                  onChange={(e) => setForm({ ...form, newPassword: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary"
+                  placeholder="••••••••"
                 />
               </div>
 

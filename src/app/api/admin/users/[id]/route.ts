@@ -21,22 +21,30 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   const adminSupabase = await checkAdmin()
   if (!adminSupabase) return NextResponse.json({ error: 'Non autorisé' }, { status: 403 })
 
-  const { fullName, email, role } = await request.json()
+  const { fullName, email, role, newPassword } = await request.json()
 
-  const updates: Record<string, string> = {}
-  if (fullName !== undefined) updates.full_name = fullName
-  if (email !== undefined) updates.email = email
-  if (role !== undefined) updates.role = role
+  if (newPassword !== undefined && newPassword.length < 6) {
+    return NextResponse.json({ error: 'Le mot de passe doit contenir au moins 6 caractères' }, { status: 400 })
+  }
+
+  const profileUpdates: Record<string, string> = {}
+  if (fullName !== undefined) profileUpdates.full_name = fullName
+  if (email !== undefined) profileUpdates.email = email
+  if (role !== undefined) profileUpdates.role = role
 
   const { error: profileError } = await adminSupabase
     .from('profiles')
-    .update(updates)
+    .update(profileUpdates)
     .eq('id', params.id)
 
   if (profileError) return NextResponse.json({ error: profileError.message }, { status: 400 })
 
-  if (email) {
-    const { error: authError } = await adminSupabase.auth.admin.updateUserById(params.id, { email })
+  const authUpdates: { email?: string; password?: string } = {}
+  if (email) authUpdates.email = email
+  if (newPassword) authUpdates.password = newPassword
+
+  if (Object.keys(authUpdates).length > 0) {
+    const { error: authError } = await adminSupabase.auth.admin.updateUserById(params.id, authUpdates)
     if (authError) return NextResponse.json({ error: authError.message }, { status: 400 })
   }
 
