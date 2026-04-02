@@ -1,36 +1,95 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ResaEdulab — Système de réservation d'équipements
 
-## Getting Started
+Application web de gestion des réservations d'équipements pour Edulab. Les utilisateurs parcourent le catalogue, créent des réservations multi-articles avec plages de dates, et reçoivent des confirmations par email. Les admins gèrent l'inventaire et suivent les prêts en cours.
 
-First, run the development server:
+## Stack technique
+
+| Couche | Choix |
+|---|---|
+| Framework | Next.js 14 (App Router) |
+| Base de données + Auth | Supabase (PostgreSQL + Supabase Auth) |
+| Styling | Tailwind CSS |
+| Email | Resend |
+| Déploiement | Vercel |
+| Langage | TypeScript |
+
+## Démarrage rapide
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Variables d'environnement
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Créer un fichier `.env.local` :
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+RESEND_API_KEY=
+NEXT_PUBLIC_APP_URL=https://your-app.vercel.app
+```
 
-## Learn More
+## Base de données Supabase
 
-To learn more about Next.js, take a look at the following resources:
+### Schéma initial
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Exécuter `supabase-schema.sql` dans le SQL Editor de Supabase pour créer les tables :
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **equipment** — catalogue d'équipements (nom, type, marque, modèle, statut, `parent_id` pour les accessoires)
+- **profiles** — profils utilisateurs (email, nom, rôle `user` | `admin`)
+- **reservations** — réservations avec dates et statut (`active` | `returned` | `cancelled`)
+- **reservation_items** — items liés à chaque réservation
 
-## Deploy on Vercel
+### Migrations
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Après la création initiale, exécuter les migrations dans l'ordre :
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Fichier | Description |
+|---|---|
+| `scripts/migration-add-parent-id.sql` | Ajoute `parent_id` sur `equipment` pour le rattachement des accessoires (valises de transport, etc.) |
+
+### Configuration Supabase
+
+- Activer le provider Email dans Authentication
+- Les policies RLS sont incluses dans le schéma SQL
+- Activer `pg_cron` pour les rappels automatiques (ou utiliser Vercel Cron)
+
+## Fonctionnalités principales
+
+### Catalogue d'équipements
+- Liste avec filtres en cascade (type, marque, statut)
+- Tri alphabétique par colonne (ID, type, marque, statut)
+- En-têtes de colonnes et filtres sticky au scroll
+- Statut « en prêt » calculé en temps réel depuis les réservations actives
+- Accessoires (valises de transport) groupés sous leur article parent
+
+### Réservation
+- Panier côté client (Zustand)
+- Sélection de dates de début/fin
+- Vérification de disponibilité côté serveur (empêche les doubles réservations)
+- Ajout automatique des accessoires au panier
+- Confirmation par email via Resend
+
+### Administration
+- Dashboard avec statistiques (total, en prêt, en retard)
+- Gestion de l'inventaire (ajout, modification, suppression, import CSV)
+- Rattachement d'accessoires via le champ « Équipement parent »
+- Suivi de toutes les réservations et retours
+- Gestion des utilisateurs et rôles
+
+## Import de données
+
+```bash
+npx ts-node scripts/import-equipment.ts
+```
+
+Importe les équipements depuis un fichier Excel/CSV. Colonnes attendues : Nom, Equipement, Marque, Modèle, S/N, Date d'achat.
+
+## Déploiement Vercel
+
+- Connecter le repo GitHub → auto-deploy sur push `main`
+- Ajouter toutes les variables d'environnement dans le dashboard Vercel
+- Le fichier `vercel.json` configure le cron job pour les rappels de retour quotidiens

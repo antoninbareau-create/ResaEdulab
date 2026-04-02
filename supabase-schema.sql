@@ -21,6 +21,7 @@ CREATE TABLE equipment (
   status        TEXT NOT NULL DEFAULT 'available'
                 CHECK (status IN ('available', 'unavailable', 'maintenance')),
   image_url     TEXT,
+  parent_id     UUID REFERENCES equipment(id) ON DELETE SET NULL,
   created_at    TIMESTAMPTZ DEFAULT now()
 );
 

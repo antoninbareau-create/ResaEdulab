@@ -12,7 +12,9 @@ export interface Equipment {
   purchase_date: string | null
   status: EquipmentStatus
   image_url: string | null
+  parent_id: string | null
   created_at: string
+  accessories?: Equipment[]
 }
 
 export interface Profile {

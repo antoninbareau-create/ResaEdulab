@@ -15,20 +15,27 @@ type EquipmentForm = {
   purchase_date: string
   image_url: string
   status: string
+  parent_id: string
 }
+
+type ParentOption = { id: string; nom: string; equipement: string }
 
 export default function EditEquipmentPage({ params }: { params: { id: string } }) {
   const router = useRouter()
   const [form, setForm] = useState<EquipmentForm | null>(null)
+  const [parentOptions, setParentOptions] = useState<ParentOption[]>([])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
 
   useEffect(() => {
     async function load() {
-      const res = await fetch(`/api/admin/equipment/${params.id}`)
-      if (!res.ok) { setLoading(false); return }
-      const data = await res.json()
+      const [itemRes, listRes] = await Promise.all([
+        fetch(`/api/admin/equipment/${params.id}`),
+        fetch('/api/equipment/list'),
+      ])
+      if (!itemRes.ok) { setLoading(false); return }
+      const data = await itemRes.json()
       setForm({
         nom: data.nom ?? '',
         equipement: data.equipement ?? '',
@@ -38,7 +45,20 @@ export default function EditEquipmentPage({ params }: { params: { id: string } }
         purchase_date: data.purchase_date ?? '',
         image_url: data.image_url ?? '',
         status: data.status ?? 'available',
+        parent_id: data.parent_id ?? '',
       })
+
+      if (listRes.ok) {
+        const listData = await listRes.json()
+        // Exclude self and items that already have a parent (no chaining)
+        const options = (listData.equipment ?? [])
+          .filter((e: ParentOption & { parent_id: string | null }) =>
+            e.id !== params.id && !e.parent_id
+          )
+          .map((e: ParentOption) => ({ id: e.id, nom: e.nom, equipement: e.equipement }))
+        setParentOptions(options)
+      }
+
       setLoading(false)
     }
     load()
@@ -64,6 +84,7 @@ export default function EditEquipmentPage({ params }: { params: { id: string } }
         serial_number: form.serial_number || null,
         purchase_date: form.purchase_date || null,
         image_url: form.image_url || null,
+        parent_id: form.parent_id || null,
       }),
     })
 
@@ -194,6 +215,29 @@ export default function EditEquipmentPage({ params }: { params: { id: string } }
                 <option value="unavailable">Indisponible</option>
                 <option value="maintenance">Maintenance</option>
               </select>
+            </div>
+
+            {/* Parent equipment selector (for accessories / transport cases) */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Équipement parent
+              </label>
+              <select
+                name="parent_id"
+                value={form.parent_id}
+                onChange={handleChange}
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary"
+              >
+                <option value="">Aucun (article principal)</option>
+                {parentOptions.map((opt) => (
+                  <option key={opt.id} value={opt.id}>
+                    {opt.nom} — {opt.equipement}
+                  </option>
+                ))}
+              </select>
+              <p className="text-xs text-gray-400 mt-1">
+                Rattacher cet article comme accessoire (ex : valise de transport).
+              </p>
             </div>
 
             <div className="sm:col-span-2 flex justify-between pt-2">

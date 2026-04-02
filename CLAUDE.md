@@ -39,6 +39,8 @@ purchase_date   DATE
 status          TEXT NOT NULL DEFAULT 'available'
                 -- values: 'available' | 'unavailable' | 'maintenance'
 image_url       TEXT
+parent_id       UUID REFERENCES equipment(id) ON DELETE SET NULL
+                -- null = article principal ; set = accessoire (ex: valise de transport)
 created_at      TIMESTAMPTZ DEFAULT now()
 ```
 

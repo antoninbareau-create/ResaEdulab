@@ -33,6 +33,14 @@ export default async function EquipmentDetailPage({ params }: { params: { id: st
 
   if (!item) notFound()
 
+  // Fetch parent (if this is an accessory) and children (accessories of this item)
+  const [{ data: parentItem }, { data: childItems }] = await Promise.all([
+    item.parent_id
+      ? supabase.from('equipment').select('id, nom, equipement').eq('id', item.parent_id).single()
+      : Promise.resolve({ data: null }),
+    supabase.from('equipment').select('id, nom, equipement, status').eq('parent_id', params.id),
+  ])
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const loan = loanRows?.[0] ? (loanRows[0].reservations as any) : null
   const borrower = loan?.profiles ?? null
@@ -99,6 +107,42 @@ export default async function EquipmentDetailPage({ params }: { params: { id: st
                   </p>
                 </div>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* Parent link (if this is an accessory) */}
+        {parentItem && (
+          <div className="pt-4 border-t border-gray-100">
+            <p className="text-sm font-medium text-gray-600 mb-2">Accessoire de</p>
+            <Link
+              href={`/equipment/${parentItem.id}`}
+              className="inline-flex items-center gap-2 bg-gray-50 border border-gray-100 rounded-lg px-4 py-2 text-sm hover:border-brand-primary transition-colors"
+            >
+              <span className="font-mono text-xs text-gray-500">{parentItem.nom}</span>
+              <span className="text-gray-900">{parentItem.equipement}</span>
+            </Link>
+          </div>
+        )}
+
+        {/* Accessories (e.g. transport cases) */}
+        {childItems && childItems.length > 0 && (
+          <div className="pt-4 border-t border-gray-100">
+            <p className="text-sm font-medium text-gray-600 mb-2">Accessoires inclus</p>
+            <div className="space-y-2">
+              {childItems.map((child) => (
+                <Link
+                  key={child.id}
+                  href={`/equipment/${child.id}`}
+                  className="flex items-center justify-between bg-gray-50 border border-gray-100 rounded-lg px-4 py-2 text-sm hover:border-brand-primary transition-colors"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-xs text-gray-500">{child.nom}</span>
+                    <span className="text-gray-900">{child.equipement}</span>
+                  </div>
+                  <Badge variant={child.status as EquipmentStatus} />
+                </Link>
+              ))}
             </div>
           </div>
         )}

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import { useState } from 'react'
@@ -6,7 +5,6 @@ import { useRouter } from 'next/navigation'
 import { useCart } from '@/hooks/useCart'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent, CardHeader } from '@/components/ui/Card'
-import { createClient } from '@/lib/supabase/client'
 import Link from 'next/link'
 
 interface ConflictDetail {
@@ -40,78 +38,57 @@ export default function NewReservationPage() {
     setShowConflictModal(false)
     setLoading(true)
 
-    const supabase = createClient()
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) { router.push('/login'); return }
-
-    // Check availability for each item in the date range
-    // Items not returned (returned_at IS NULL) on active reservations are unavailable
-    // regardless of whether the reservation end_date has passed
-    const equipmentIds = items.map((i) => i.equipment.id)
-    const { data: conflicts } = await supabase
-      .from('reservation_items')
-      .select('equipment_id, returned_at, reservations!inner(start_date, end_date, status, profiles(full_name, email))')
-      .in('equipment_id', equipmentIds)
-      .eq('reservations.status', 'active')
-      .is('returned_at', null)
-
-    const conflicting = conflicts?.filter((c: any) => {
-      const resStart = new Date(c.reservations.start_date)
-      const resEnd = new Date(c.reservations.end_date)
-      const reqStart = new Date(startDate)
-      const reqEnd = new Date(endDate)
-      // Conflict only if date ranges actually overlap
-      // Overdue items are allowed — the user was already warned at add-to-cart time
-      return reqStart <= resEnd && reqEnd >= resStart
-    })
-
-    if (conflicting && conflicting.length > 0) {
-      const details: ConflictDetail[] = conflicting.map((c: any) => {
-        const equip = items.find((i) => i.equipment.id === c.equipment_id)
-        const profile = c.reservations.profiles
-        const resEnd = new Date(c.reservations.end_date)
-        return {
-          equipmentNom: equip?.equipment.nom ?? c.equipment_id,
-          equipmentType: equip?.equipment.equipement ?? '',
-          borrowerName: profile?.full_name || '—',
-          borrowerEmail: profile?.email || '—',
-          startDate: new Date(c.reservations.start_date).toLocaleDateString('fr-FR'),
-          endDate: resEnd.toLocaleDateString('fr-FR'),
-          isOverdue: resEnd < new Date(),
-        }
+    try {
+      const res = await fetch('/api/reservations/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          equipmentIds: items.map((i) => i.equipment.id),
+          startDate,
+          endDate,
+          notes,
+        }),
       })
-      setConflictDetails(details)
-      setShowConflictModal(true)
+
+      if (res.status === 401) {
+        router.push('/login')
+        return
+      }
+
+      const data = await res.json()
+
+      if (res.status === 409 && data.conflict) {
+        // Server detected conflicts — map them to our UI format
+        const details: ConflictDetail[] = data.details.map((c: { equipmentId: string; borrowerName: string; borrowerEmail: string; startDate: string; endDate: string; isOverdue: boolean }) => {
+          const equip = items.find((i) => i.equipment.id === c.equipmentId)
+          return {
+            equipmentNom: equip?.equipment.nom ?? c.equipmentId,
+            equipmentType: equip?.equipment.equipement ?? '',
+            borrowerName: c.borrowerName,
+            borrowerEmail: c.borrowerEmail,
+            startDate: c.startDate,
+            endDate: c.endDate,
+            isOverdue: c.isOverdue,
+          }
+        })
+        setConflictDetails(details)
+        setShowConflictModal(true)
+        setLoading(false)
+        return
+      }
+
+      if (!res.ok) {
+        setError(data.error || 'Erreur lors de la création de la réservation.')
+        setLoading(false)
+        return
+      }
+
+      clearCart()
+      router.push(`/reservations/${data.reservationId}`)
+    } catch {
+      setError('Erreur de connexion au serveur.')
       setLoading(false)
-      return
     }
-
-    // Create reservation
-    const { data: reservation, error: rErr } = await supabase
-      .from('reservations')
-      .insert({ user_id: user.id, start_date: startDate, end_date: endDate, notes })
-      .select()
-      .single()
-
-    if (rErr || !reservation) {
-      setError('Erreur lors de la création de la réservation.')
-      setLoading(false)
-      return
-    }
-
-    // Create reservation items
-    const { error: iErr } = await supabase.from('reservation_items').insert(
-      items.map((i) => ({ reservation_id: reservation.id, equipment_id: i.equipment.id }))
-    )
-
-    if (iErr) {
-      setError('Erreur lors de l\'ajout des équipements.')
-      setLoading(false)
-      return
-    }
-
-    clearCart()
-    router.push(`/reservations/${reservation.id}`)
   }
 
   if (items.length === 0) {
