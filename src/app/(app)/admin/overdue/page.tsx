@@ -66,7 +66,7 @@ export default async function AdminOverduePage() {
                 const daysLate = Math.floor(
                   (Date.now() - new Date(row.endDate).getTime()) / (1000 * 60 * 60 * 24)
                 )
-                const mailtoHref = `mailto:${row.borrowerEmail}`
+                const mailtoHref = `https://mail.google.com/mail/?view=cm&to=${encodeURIComponent(row.borrowerEmail)}`
 
                 return (
                   <tr key={i} className="hover:bg-red-50">
@@ -84,6 +84,7 @@ export default async function AdminOverduePage() {
                     <td className="px-4 py-3">
                       <a
                         href={mailtoHref}
+                        target="_blank"
                         rel="noopener noreferrer"
                         className="text-xs px-3 py-1 rounded-full border border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white transition-colors whitespace-nowrap"
                       >
