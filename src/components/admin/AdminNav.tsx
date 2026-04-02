@@ -7,6 +7,7 @@ const NAV_ITEMS = [
   { href: '/admin/dashboard', label: 'Tableau de bord' },
   { href: '/admin/equipment', label: 'Inventaire' },
   { href: '/admin/reservations', label: 'Réservations' },
+  { href: '/admin/overdue', label: 'Retards' },
   { href: '/admin/users', label: 'Utilisateurs' },
 ]
 
