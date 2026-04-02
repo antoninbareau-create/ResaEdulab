@@ -84,6 +84,7 @@ export default async function AdminOverduePage() {
                     <td className="px-4 py-3">
                       <a
                         href={mailtoHref}
+                        rel="noopener noreferrer"
                         className="text-xs px-3 py-1 rounded-full border border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white transition-colors whitespace-nowrap"
                       >
                         ✉ Envoyer un rappel
