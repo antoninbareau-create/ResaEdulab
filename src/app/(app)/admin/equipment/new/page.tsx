@@ -323,13 +323,25 @@ export default function NewEquipmentPage() {
         <div className="space-y-4">
           <Card>
             <CardHeader>
-              <p className="text-sm text-gray-500">
-                Importez un fichier CSV au format Excel français (séparateur{' '}
-                <code className="bg-gray-100 px-1 rounded">;</code>). En-têtes attendus :{' '}
-                <code className="bg-gray-100 px-1 rounded text-xs">
-                  Nom;Equipement;Marque;Modèle;S/N;Date d&apos;achat
-                </code>
-              </p>
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <p className="text-sm text-gray-500">
+                  Importez un fichier CSV au format Excel français (séparateur{' '}
+                  <code className="bg-gray-100 px-1 rounded">;</code>). En-têtes attendus :{' '}
+                  <code className="bg-gray-100 px-1 rounded text-xs">
+                    Nom;Equipement;Marque;Modèle;S/N;Date d&apos;achat
+                  </code>
+                </p>
+                <a
+                  href="data:text/csv;charset=utf-8,%EF%BB%BFNom%3BEquipement%3BMarque%3BMod%C3%A8le%3BS%2FN%3BDate%20d'achat%0A"
+                  download="modele_import_equipement.csv"
+                  className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-brand-primary text-brand-primary text-sm font-medium hover:bg-brand-light transition-colors whitespace-nowrap"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 4v11" />
+                  </svg>
+                  Télécharger le modèle CSV
+                </a>
+              </div>
             </CardHeader>
             <CardContent>
               {csvFeedback && (
