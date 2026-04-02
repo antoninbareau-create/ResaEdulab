@@ -27,11 +27,13 @@ export default async function AdminDashboardPage() {
     supabase.from('reservations').select('*', { count: 'exact', head: true }).eq('status', 'active').lt('end_date', now),
   ])
 
-  const onLoan = new Set((onLoanRows ?? []).map((r: any) => r.equipment_id)).size
+  const onLoanIds = new Set((onLoanRows ?? []).map((r: any) => r.equipment_id))
+  const onLoan = onLoanIds.size
+  const reallyAvailable = (availableEquipment || 0) - onLoan
 
   const stats = [
     { label: 'Total équipements', value: totalEquipment || 0, color: 'bg-brand-light text-brand-primary', href: '/admin/equipment' },
-    { label: 'Disponibles', value: availableEquipment || 0, color: 'bg-green-50 text-green-700', href: '/admin/equipment?status=available' },
+    { label: 'Disponibles', value: reallyAvailable, color: 'bg-green-50 text-green-700', href: '/admin/equipment?status=available' },
     { label: 'En prêt', value: onLoan, color: 'bg-orange-50 text-orange-700', href: '/admin/equipment?status=on_loan' },
     { label: 'Réservations actives', value: activeReservations || 0, color: 'bg-blue-50 text-blue-700', href: '/admin/reservations?status=active' },
     { label: 'En retard', value: overdueReservations || 0, color: 'bg-red-50 text-red-700', href: '/admin/overdue' },
