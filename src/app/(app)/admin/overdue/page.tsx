@@ -66,11 +66,7 @@ export default async function AdminOverduePage() {
                 const daysLate = Math.floor(
                   (Date.now() - new Date(row.endDate).getTime()) / (1000 * 60 * 60 * 24)
                 )
-                const subject = encodeURIComponent(`Rappel de retour — ${row.equipmentNom}`)
-                const body = encodeURIComponent(
-                  `Bonjour ${row.borrowerName},\n\nNous vous rappelons que l'équipement suivant était attendu en retour le ${new Date(row.endDate).toLocaleDateString('fr-FR')} :\n\n- ${row.equipmentType} (${row.equipmentNom})\n\nMerci de le restituer dès que possible.\n\nCordialement,\nL'équipe EduLab`
-                )
-                const mailtoHref = `mailto:${row.borrowerEmail}?subject=${subject}&body=${body}`
+                const mailtoHref = `mailto:${row.borrowerEmail}`
 
                 return (
                   <tr key={i} className="hover:bg-red-50">
