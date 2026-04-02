@@ -8,9 +8,10 @@ import { Equipment, EquipmentStatus } from '@/types'
 interface Props {
   equipment: Equipment[]
   onLoanIds: string[]
+  initialStatus?: string
 }
 
-export function EquipmentTable({ equipment, onLoanIds }: Props) {
+export function EquipmentTable({ equipment, onLoanIds, initialStatus }: Props) {
   const onLoanSet = new Set(onLoanIds)
 
   const types = useMemo(() => {
@@ -25,7 +26,7 @@ export function EquipmentTable({ equipment, onLoanIds }: Props) {
 
   const [filterType, setFilterType] = useState('')
   const [filterMarque, setFilterMarque] = useState('')
-  const [filterStatut, setFilterStatut] = useState('')
+  const [filterStatut, setFilterStatut] = useState(initialStatus || '')
 
   const filtered = useMemo(() => {
     return equipment.filter((item) => {

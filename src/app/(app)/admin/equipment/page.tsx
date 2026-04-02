@@ -4,7 +4,8 @@ import { Card } from '@/components/ui/Card'
 import { EquipmentTable } from '@/components/admin/EquipmentTable'
 import Link from 'next/link'
 
-export default async function AdminEquipmentPage() {
+export default async function AdminEquipmentPage({ searchParams }: { searchParams: Promise<{ status?: string }> }) {
+  const { status: initialStatus } = await searchParams
   const supabase = createAdminClient()
   const today = new Date().toISOString()
 
@@ -33,7 +34,7 @@ export default async function AdminEquipmentPage() {
       </div>
 
       <Card>
-        <EquipmentTable equipment={equipment ?? []} onLoanIds={onLoanIds} />
+        <EquipmentTable equipment={equipment ?? []} onLoanIds={onLoanIds} initialStatus={initialStatus} />
       </Card>
     </div>
   )

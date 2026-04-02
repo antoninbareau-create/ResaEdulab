@@ -1,22 +1,39 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const dynamic = 'force-dynamic'
+import Link from 'next/link'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { formatDateRange } from '@/lib/utils'
 import { ReservationStatus } from '@/types'
 
-export default async function AdminReservationsPage() {
+export default async function AdminReservationsPage({ searchParams }: { searchParams: Promise<{ status?: string }> }) {
+  const { status: statusFilter } = await searchParams
   const supabase = createAdminClient()
 
-  const { data: reservations } = await supabase
+  let query = supabase
     .from('reservations')
     .select('*, profiles(full_name, email), reservation_items(id, equipment(nom, equipement))')
     .order('created_at', { ascending: false })
 
+  if (statusFilter) {
+    query = query.eq('status', statusFilter)
+  }
+
+  const { data: reservations } = await query
+
   return (
     <div>
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Toutes les réservations</h1>
+      <div className="flex items-center gap-3 mb-6">
+        <h1 className="text-2xl font-bold text-gray-900">
+          {statusFilter === 'active' ? 'Réservations actives' : 'Toutes les réservations'}
+        </h1>
+        {statusFilter && (
+          <Link href="/admin/reservations" className="text-sm text-gray-400 hover:text-gray-600">
+            Voir tout
+          </Link>
+        )}
+      </div>
 
       <Card>
         <div className="overflow-x-auto">
