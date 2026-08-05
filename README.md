@@ -2,6 +2,8 @@
 
 Application web de gestion des réservations d'équipements pour Edulab. Les utilisateurs parcourent le catalogue, créent des réservations multi-articles avec plages de dates, et reçoivent des confirmations par email. Les admins gèrent l'inventaire et suivent les prêts en cours.
 
+> **Manuel d'utilisation** : voir [`MANUEL.md`](./MANUEL.md) — couvre les parcours enseignant emprunteur et administrateur Edulab.
+
 ## Stack technique
 
 | Couche | Choix |
